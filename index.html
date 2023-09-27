@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link href="media/graphics/favicon.ico" rel="shortcut icon" />
+    <title> SceneWiz3D </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="box_swipe.css">
+    <script src="box_swipe.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Segoe+UI" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- SECTION: HEADER -->
+    <div class="n-header">
+    </div>
+    <div class="n-title">
+        <h1> SceneWiz3D: Towards Text-guided <br> 3D Scene Composition </h1>
+    </div>
+    <!-- SECTION: MAIN BODY -->
+    <div class="n-article">
+        <!-- teaser -->
+        
+        <!-- paper links -->
+        
+        <h2 id="abstract"> Abstract </h2>
+
+        <p>We witness significant breakthroughs in the technology for generating 3D objects from text. Existing approaches either leverage large text-to-image models to
+            optimize a 3D representation or train 3D generators on object-centric datasets.
+            Generating entire scenes, however, remains very challenging as a scene contains multiple 3D objects, diverse and scattered. In this work, we introduce
+            <b>SceneWiz3D</b> – a novel approach to synthesize high fidelity 3D scenes from text.
+            We marry the locality of objects with globality of scenes by introducing a hybrid
+            3D representation – explicit for objects and implicit for scenes. Remarkably,
+            an object, being represented explicitly, can be either generated from text using
+            conventional text-to-3D approaches, or provided by users. To configure the
+            layout of the scene and automatically place objects, we apply Particle Swarm
+            Optimization technique during the distillation process. Furthermore, in the text-to-scene scenario it is difficult for certain parts of the scene (e.g., corners, occlusion)
+            to receive multi-view supervision, leading to inferior geometry. To mitigate
+            the lack of such supervision, we incorporate an RGBD panorama diffusion
+            model, resulting in high quality geometry. Extensive evaluation supports that
+            our approach achieves superior quality over previous approaches, enabling the
+            generation of detailed and view-consistent 3D scenes</p>
+
+        <h2 id="framework"> Overview </h2>
+        </p>
+       
+            <img src="media/framework_v5.jpg" width="100%" />
+        </p>
+           
+        <p>Our goal is to create high-fidelity 3D scenes from text. We propose a hybrid scene representation where objects of Interest (OOIs) are modeled by Deep Marching Tetrahedra.
+            <!-- The categories of OOIs can either can directly identified by users, or automatically determined with the help of Large Language Model (LLM).
+Initial DMTet for OOIs can then be instantiated with the help of text-to-3D methods, or provided by users. -->
+            The remaining parts of the scene is modeled by Neural Radiance Field (NeRF). </p>
+
+            <p> As we disentangle OOIs from the rest of the scene in our hybrid representation, we need to determine the configuration for each object, including coordinates, scaling factor, and rotation degree. 
+                We find that it is nontrivial to adopt gradient descent to update the low-dimensional config, but instead propose to use Particle Swarm Optimization (PSO) to automatically configure the scene's layout.
+                Different from prior works that only employ perspectivew view distillation, we also incorporate LDM3D, a diffusion model finetuned on panoramic images in RGBD space to provide additional guidance. During the optimization
+                process, LDM3D provides additional prior information: The RGBD knowledge yield supervision
+                in depth, while panoramic knowledge mitigates the issues of limited views with perspective images
+                and disambiguates the global structure of a scene.
+            </p>
+
+      
+
+        <h2 id="videos"> Artistic scenes </h2>
+        <p> What will you see upon awakening from a deep dream? </p>
+        <p style="color:red;"> Hover the mouse over the image area to see the text prompt!</p>
+            <div class="video-grid">
+                <div class="video-row">
+                    <div class="video" data-hover-text="a bedroom with large windows, revealing an alien galaxy">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/0.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows, revealing vibrant garden, watercolor painting">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom, aerial view of bustling skyscrapers outside, by van gogh">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/2.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside, ukiyo-e style">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/20.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                </div>
+                <div class="video-row">
+                    <div class="video" data-hover-text="a bedroom with large windows revealing majestic snow-capped mountain range">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/4.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing a enchanted forest outside">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/5.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/6.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                     <div class="video" data-hover-text="a bedroom, aerial view of bustling skyscrapers outside, by van gogh">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/7.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="video-row">
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside, ukiyo-e style">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/8.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside, anime style">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/9.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/10.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                     <div class="video" data-hover-text="a bedroom in a dream">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/11.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="video-row">
+                    <div class="video" data-hover-text="a bedroom with large windows, revealing roaring blaze outsideun">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/12.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/13.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows, showing enchanted forest outside, by Joan Miro, in Surrealism style">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/14.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                     <div class="video" data-hover-text="a bedroom with large windows, revealing aerial view of bustling skyscrapers outside">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/15.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="video-row">
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sunset outside, ukiyo-e style">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/16.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows, revealing sunset outside, J.M.W. Turner style">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/17.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows, revealing sunset outside, oil painting">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/18.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                     <div class="video" data-hover-text="a bedroom with large windows, revealing sunset outside">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/19.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="video-row">
+                    <div class="video" data-hover-text="a bedroom with large windows revealing the Milky Way">
+                       <video autoplay loop muted>
+                         <source src="media/bedroom/3.mp4" type="video/mp4">
+                       </video>
+                   </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing sea outside">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/21.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="a bedroom with large windows revealing enchanted forest outside">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/22.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                     <div class="video" data-hover-text="a bedroom with large windows, revealing aerial view of bustling skyscrapers outside, anime style">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/23.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <!-- <div class="video-row">
+                    <div class="video" data-hover-text="sun">
+                      <video autoplay loop muted>
+                        <source src="media/bedroom/24.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="video" data-hover-text="sun">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/25.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video" data-hover-text="sun">
+                     <video autoplay loop muted>
+                        <source src="media/bedroom/26.mp4" type="video/mp4">
+                     </video>
+                    </div>
+                     <div class="video" data-hover-text="sun">
+                        <video autoplay loop muted>
+                          <source src="media/bedroom/27.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div> -->
+
+            
+    </div>
+       
+    
+    <h2 id="videos"> Diverse scene types </h2>
+    <div class="video-grid">
+        <div class="video-row">
+            <div class="video" data-hover-text="an astronaut flying across multi-universe">
+              <video autoplay loop muted>
+                <source src="media/diverse/0.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video" data-hover-text="a bedroom in Black-and-White style">
+                <video autoplay loop muted>
+                  <source src="media/diverse/1.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="video" data-hover-text="a washing room in anime style">
+             <video autoplay loop muted>
+                <source src="media/diverse/2.mp4" type="video/mp4">
+             </video>
+            </div>
+            <div class="video" data-hover-text="Curry in the basketball court">
+              <video autoplay loop muted>
+                <source src="media/diverse/3.mp4" type="video/mp4">
+              </video>
+            </div>
+        </div>
+        <div class="video-row">
+            <div class="video" data-hover-text="miniature car models on the table">
+              <video autoplay loop muted>
+                <source src="media/diverse/4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video" data-hover-text="a dungeon in a comic">
+                <video autoplay loop muted>
+                  <source src="media/diverse/5.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="video" data-hover-text="many rockets being launched in the desert">
+             <video autoplay loop muted>
+                <source src="media/diverse/6.mp4" type="video/mp4">
+             </video>
+            </div>
+             <div class="video" data-hover-text="a bedroom with floating cloud in anime style">
+                <video autoplay loop muted>
+                  <source src="media/diverse/7.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div class="video-row">
+            <div class="video" data-hover-text="rockets flying across starry sky">
+              <video autoplay loop muted>
+                <source src="media/diverse/8.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video" data-hover-text="an astronaut lands on the moon, embarking on an exploration of the unknown and mysterious universe">
+                <video autoplay loop muted>
+                  <source src="media/diverse/9.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="video" data-hover-text="A spacecraft navigating through the tranquil universe">
+             <video autoplay loop muted>
+                <source src="media/diverse/10.mp4" type="video/mp4">
+             </video>
+            </div>
+             <div class="video" data-hover-text="a Shogun in a spacious Dojo">
+                <video autoplay loop muted>
+                  <source src="media/diverse/11.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+    
+
+    <h2 id="interaction"> Manipulating the scenes</h2>
+    <p style="color:red;"> The dynamic manipulation of objects will happen within one second in the video. Stay tuned!</p>
+    <div class="video3-grid">
+        <div class="video3-row">
+           
+            <div class="video3" data-hover-text="LEGO-built buildings">
+              <video autoplay loop muted>
+                <source src="media/interaction/add1.mp4" type="video/mp4">
+              </video>
+              <div class="add-overlay">Add</div>
+            </div>
+       
+            <div class="video3" data-hover-text="an old dormitory, 1990s point and click 16bit adventure game style">
+                <video autoplay loop muted>
+                  <source src="media/interaction/add2.mp4" type="video/mp4">
+                </video>
+                <div class="add-overlay">Add</div>
+            </div>
+            <div class="video3" data-hover-text="pencil-drawing buildings">
+              <video autoplay loop muted>
+                <source src="media/interaction/add3.mp4" type="video/mp4">
+              </video>
+              <div class="add-overlay">Add</div>
+            </div>
+        </div>
+        <div class="video3-row">
+            <div class="video3" data-hover-text="cars running at the street, by Joan Miro, in Surrealism style">
+              <video autoplay loop muted>
+                <source src="media/interaction/big.mp4" type="video/mp4">
+              </video>
+              <div class="add-overlay">Larger</div>
+            </div>
+            <div class="video3" data-hover-text="an old dormitory, 1990s point and click 16bit adventure game style">
+                <video autoplay loop muted>
+                  <source src="media/interaction/mv.mp4" type="video/mp4">
+                </video>
+                <div class="add-overlay">Move</div>
+            </div>
+            <div class="video3" data-hover-text="pavilions and towers in Chinese ink painting">
+                <video autoplay loop muted>
+                  <source src="media/interaction/rm.mp4" type="video/mp4">
+                </video>
+                <div class="add-overlay">Remove</div>
+            </div>
+            
+        </div>
+    </div>  
+    
+    <h2 id="compare"> Comparison with baselines</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>A bedroom with large windows revealing sunset outside</th>
+                <th>Washing room,<br> realistic detailed photo</th>
+                <th>A bedroom by Pablo Picasso</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+              <tr>
+                <th>DreamFusion</th>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/sunset/dreamfusion.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/washing/dreamfusion.mp4" type="video/mp4">
+                  </video></td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/pablo/dreamfusion.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <th>ProlificDreamer</th>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/sunset/prolificdreamer.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/washing/prolificdreamer.mp4" type="video/mp4">
+                  </video></td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/pablo/prolificdreamer.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <th>Text2room</th>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/sunset/text2room.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/washing/text2room.mp4" type="video/mp4">
+                  </video></td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/pablo/text2room.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <th>LDM3D</th>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/sunset/ldm3d.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/washing/ldm3d.mp4" type="video/mp4">
+                  </video></td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/pablo/ldm3d.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <th>SceneWiz3D</th>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/sunset/ours.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/washing/ours.mp4" type="video/mp4">
+                  </video></td>
+                <td> <video style="width: 88.33%;" autoplay loop muted>
+                    <source src="media/comparison/pablo/ours.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 id="compare"> Acknowledgments</h2>
+          <p>We borrow the source code of this website from <a  style="color: blue;" href="https://nvlabs.github.io/genvs/">here (GeNVS)</a>.</p>
+
+
+
+    <div class="n-footer">
+    </div>
+
+    <script>
+        const videos = document.querySelectorAll('.video video');
+    
+        videos.forEach((video) => {
+          video.addEventListener('mouseover', () => {
+            video.pause();
+          });
+    
+          video.addEventListener('mouseout', () => {
+            video.play();
+          });
+        });
+        document.querySelectorAll('video').forEach(function(el, i) { el.playbackRate = 0.5; });    
+//         var vds = document.querySelector("video");
+// for (var i = 0; i < vds.length; i++) {
+//   var video = vds[i];
+//   video.playbackRate = 0.1; }
+      </script>
+
+</body>
+
+</html>
